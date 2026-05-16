@@ -144,6 +144,10 @@ https://apex.amjadalahdal.com/ords/r/energy_demo/energy-data-management-system/l
 
 ## Screenshots
 
+Angular billing dashboard:
+
+![Angular dashboard](docs/screenshots/angular-dashboard.png)
+
 APEX application login:
 
 ![APEX login](docs/screenshots/apex-login.png)
