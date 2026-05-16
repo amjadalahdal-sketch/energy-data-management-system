@@ -24,6 +24,16 @@ This is one backend/business system with two frontends:
 - Spring Boot exposes selected billing operations as REST endpoints.
 - Oracle PL/SQL contains the core business rules.
 
+```mermaid
+flowchart LR
+    A[Oracle APEX<br/>Internal operations UI] --> D[(Oracle Database)]
+    B[Angular Dashboard<br/>Modern workflow UI] --> C[Spring Boot REST API]
+    C --> P[PL/SQL Billing Packages]
+    A --> P
+    P --> D
+    D --> P
+```
+
 ## Technology Stack
 
 - Oracle Database
@@ -132,6 +142,16 @@ The APEX root hostname redirects to the application login page:
 https://apex.amjadalahdal.com/ords/r/energy_demo/energy-data-management-system/login
 ```
 
+## Screenshots
+
+APEX application login:
+
+![APEX login](docs/screenshots/apex-login.png)
+
+Spring Boot API health endpoint:
+
+![API health](docs/screenshots/api-health.png)
+
 ## Demo Walkthrough
 
 Use APEX as the full internal operations UI:
@@ -203,3 +223,15 @@ It demonstrates:
 - REST API integration with Spring Boot
 - Angular frontend integration
 - End-to-end billing workflow design
+
+## Alignment With AKTIF Technology Role
+
+The project is aligned with software development for the energy industry and demonstrates the main areas mentioned in the AKTIF Technology role profile:
+
+- Oracle database design, SQL, and PL/SQL
+- data modeling around customers, metering points, meters, tariffs, consumption, billing runs, and billing items
+- enterprise workflow implementation for energy billing
+- Java and Spring Boot REST integration
+- Angular and TypeScript frontend development
+- HTML and CSS user interface work
+- separation of business logic, API integration, and UI layers
