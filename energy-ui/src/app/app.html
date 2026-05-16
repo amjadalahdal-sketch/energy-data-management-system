@@ -1,0 +1,125 @@
+<div class="page">
+  <h1>Energy Billing Dashboard</h1>
+
+  <section class="card">
+    <h2>Billing Runs</h2>
+    @if (message()) {
+      <p class="message">{{ message() }}</p>
+    }
+
+    <form class="create-form" (ngSubmit)="createBillingRun()">
+      <input
+        type="text"
+        name="runName"
+        placeholder="Run name"
+        [(ngModel)]="newRun.runName"
+        required
+      />
+
+      <input
+        type="text"
+        name="periodFrom"
+        placeholder="DD.MM.YYYY"
+        [(ngModel)]="newRun.periodFrom"
+        required
+      />
+
+      <input
+        type="text"
+        name="periodTo"
+        placeholder="DD.MM.YYYY"
+        [(ngModel)]="newRun.periodTo"
+        required
+      />
+
+      <button type="submit">Create Billing Run</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Run Name</th>
+          <th>Period From</th>
+          <th>Period To</th>
+          <th>Created At</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let run of billingRuns()">
+          <td>{{ run.billingRunId }}</td>
+          <td>{{ run.runName }}</td>
+          <td>{{ run.periodFrom | date:'dd.MM.yyyy' }}</td>
+          <td>{{ run.periodTo | date:'dd.MM.yyyy' }}</td>
+          <td>{{ run.createdAt | date:'dd.MM.yyyy HH:mm' }}</td>
+          <td>
+            <span class="status-badge" [class]="run.status.toLowerCase()">
+              {{ run.status }}
+            </span>
+          </td>
+          <td>
+            @if (run.status !== 'FINALIZED') {
+              <button (click)="processRun(run.billingRunId)">
+                Process
+              </button>
+            }
+
+            @if (run.status === 'CALCULATED') {
+              <button (click)="finalizeRun(run.billingRunId)">
+                Finalize
+              </button>
+            }
+            @if (run.status === 'FINALIZED') {
+              <span class="muted-action">No Action Required.</span>
+            }
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>Billing Items</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Run ID</th>
+          <th>Customer ID</th>
+          <th>Metering Point</th>
+          <th>Consumption</th>
+          <th>Price / kWh</th>
+          <th>Energy Amount</th>
+          <th>Base Fee</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of billingItems()">
+          <td>{{ item.billingItemId }}</td>
+          <td>{{ item.billingRunId }}</td>
+          <td>{{ item.customerId }}</td>
+          <td>{{ item.mpId }}</td>
+          <td class="numeric">{{ item.totalConsumption | number:'1.2-2' }}</td>
+          <td class="numeric">{{ item.pricePerKwh | number:'1.2-4' }}</td>
+          <td class="numeric">{{ item.energyAmount | number:'1.2-2' }}</td>
+          <td class="numeric">{{ item.baseFee | number:'1.2-2' }}</td>
+          <td class="numeric">{{ item.totalAmount | number:'1.2-2' }}</td>
+          <td>
+            <span class="status-badge" [class]="item.status.toLowerCase()">
+              {{ item.status }}
+            </span>
+          </td>
+          <td>{{ item.createdAt | date:'dd.MM.yyyy HH:mm' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
