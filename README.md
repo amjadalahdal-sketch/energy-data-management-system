@@ -184,20 +184,13 @@ ENERGY_DB_USERNAME
 ENERGY_DB_PASSWORD
 ```
 
-For local development, create `start-backend.local.bat` and set those variables before calling `start-backend.bat`. The local file is ignored by Git.
+For local development, use `start_energy_system.bat`. It starts Spring Boot and Angular, uses `ENERGY_DEMO` as the default database user, and asks for the Oracle password if `ENERGY_DB_PASSWORD` is not already set.
 
-Start the backend:
+Start the local system:
 
 ```powershell
 cd D:\JavaWorkSpace\energy-api
-.\start-backend.local.bat
-```
-
-Start the Angular frontend in another terminal:
-
-```powershell
-cd D:\JavaWorkSpace\energy-api\energy-ui
-npm start
+.\start_energy_system.bat
 ```
 
 Then open:
