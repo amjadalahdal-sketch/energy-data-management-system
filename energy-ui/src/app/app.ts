@@ -37,6 +37,7 @@ interface BillingItem {
 export class App {
   billingRuns = signal<BillingRun[]>([]);
   billingItems = signal<BillingItem[]>([]);
+  private readonly apiBaseUrl = this.getApiBaseUrl();
 
   message = signal<string>('');
 
@@ -54,20 +55,20 @@ export class App {
 
   loadBillingRuns() {
     this.http
-      .get<BillingRun[]>('https://api.amjadalahdal.com/api/billing-runs')
+      .get<BillingRun[]>(`${this.apiBaseUrl}/api/billing-runs`)
       .subscribe(data => this.billingRuns.set(data));
   }
 
   loadBillingItems() {
     this.http
-      .get<BillingItem[]>('https://api.amjadalahdal.com/api/billing-items')
+      .get<BillingItem[]>(`${this.apiBaseUrl}/api/billing-items`)
       .subscribe(data => this.billingItems.set(data));
   }
 
   processRun(id: number) {
     this.http
       .post<{ message: string }>(
-        `https://api.amjadalahdal.com/api/billing-runs/${id}/process?createdBy=22`,
+        `${this.apiBaseUrl}/api/billing-runs/${id}/process?createdBy=22`,
         {}
       )
       .subscribe(() => {
@@ -79,7 +80,7 @@ export class App {
   finalizeRun(id: number) {
     this.http
       .post<{ message: string }>(
-        `https://api.amjadalahdal.com/api/billing-runs/${id}/finalize`,
+        `${this.apiBaseUrl}/api/billing-runs/${id}/finalize`,
         {}
       )
       .subscribe(() => {
@@ -100,7 +101,7 @@ export class App {
 
     this.http
       .post<{ message: string }>(
-        'https://api.amjadalahdal.com/api/billing-runs',
+        `${this.apiBaseUrl}/api/billing-runs`,
         request
       )
       .subscribe({
@@ -125,5 +126,15 @@ export class App {
   toApiDate(value: string): string {
     const [day, month, year] = value.split('.');
     return `${year}-${month}-${day}`;
+  }
+
+  private getApiBaseUrl(): string {
+    const hostname = window.location.hostname;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:8081';
+    }
+
+    return 'https://api.amjadalahdal.com';
   }
 }

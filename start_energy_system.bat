@@ -65,13 +65,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-NetTCPConnection -Lo
 echo.
 
 echo Starting Spring Boot API on http://localhost:8081 ...
-start "Energy API - Spring Boot" cmd /k "cd /d "%ROOT_DIR%" && mvnw.cmd spring-boot:run"
+start "Energy API - Spring Boot" cmd /k "cd /d ""%ROOT_DIR%"" && mvnw.cmd spring-boot:run"
 
 echo Waiting before starting Angular...
 timeout /t 8 /nobreak >nul
 
 echo Starting Angular UI on http://localhost:4200 ...
-start "Energy UI - Angular" cmd /k "cd /d "%ANGULAR_DIR%" && npm start"
+start "Energy UI - Angular" cmd /k "cd /d ""%ANGULAR_DIR%"" && npm start"
 
 echo.
 echo Waiting for services to start...

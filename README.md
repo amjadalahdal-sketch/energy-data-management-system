@@ -208,6 +208,41 @@ Angular      localhost:4200
 cloudflared  tunnel amjad-shop
 ```
 
+## Troubleshooting Hints
+
+If Angular opens but shows no records, check the backend data endpoints first:
+
+```text
+http://localhost:8081/api/health
+http://localhost:8081/api/billing-runs
+http://localhost:8081/api/billing-items
+```
+
+If `/api/health` works but the billing endpoints return `500`, the Spring Boot application is running but cannot read from Oracle.
+
+A common cause after restarting the laptop is that the Oracle user is locked because the application or another tool tried to connect several times with a missing or wrong password:
+
+```text
+ORA-28000: The account is locked
+```
+
+Unlock the local demo schema with a DBA account:
+
+```sql
+ALTER USER ENERGY_DEMO IDENTIFIED BY DEMO123 ACCOUNT UNLOCK;
+```
+
+Then restart Spring Boot and refresh Angular.
+
+Also make sure Spring Boot is started with the correct environment variables:
+
+```text
+ENERGY_DB_USERNAME=ENERGY_DEMO
+ENERGY_DB_PASSWORD=<local Oracle password>
+```
+
+For local development, Angular automatically uses `http://localhost:8081` when opened from `localhost`. When opened through Cloudflare, it uses `https://api.amjadalahdal.com`.
+
 ## Project Purpose
 
 This project was built as a portfolio and interview demo aligned with database-heavy enterprise software in the energy industry.
